@@ -1,4 +1,4 @@
-name: dotnet package
+name: DroneApp
 
 on: [push]
 
@@ -17,4 +17,10 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release --no-restore DroneApp/DroneApp.sln
       - name: Test
-        run: dotnet test --no-restore --verbosity normal DroneApp/DroneApp.sln
+        run: dotnet test --no-restore --verbosity normal --logger trx --results-directory "TestResults" DroneApp/DroneApp.sln
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: dotnet-results-3.1.412
+          path: TestResults
+        if: ${{ always() }}
