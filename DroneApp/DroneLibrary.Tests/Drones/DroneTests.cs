@@ -77,27 +77,43 @@ namespace DroneLibrary.Tests.Drones
             var mockBackToBaseStrategy = new Mock<IBackToBaseStrategy>();
 
             var drone = new Drone(angle, mockArea.Object, startPosition, mockBackToBaseStrategy.Object);
-            var moved = drone.Move(speed);
+            var moveOk = drone.Move(speed);
 
-            Assert.True(moved);
+            Assert.True(moveOk);
             Assert.True(drone.Position.AproxEqual(expectedPosition));
             Assert.Equal(2, drone.MovementHistory.Count());
             mockArea.Verify(m => m.IsValidPositionInArea(It.IsAny<Coordinate>()), Times.Exactly(2));
         }
 
         [Fact]
+        public void Move_NoSpeed()
+        {
+            var mockArea = new Mock<IFlightArea>();
+            MockUtils.SetAsInfiniteFlightArea(mockArea);
+            var mockBackToBaseStrategy = new Mock<IBackToBaseStrategy>();
+            var initialPosition = new Coordinate(0, 0);
+
+            var drone = new Drone(0, mockArea.Object, initialPosition, mockBackToBaseStrategy.Object);
+            var moveOk = drone.Move(0);
+
+            Assert.True(moveOk);
+            Assert.Equal(initialPosition, drone.Position);
+            Assert.Single(drone.MovementHistory);
+            mockArea.Verify(m => m.IsValidPositionInArea(It.IsAny<Coordinate>()), Times.Once());
+        }
+
+        [Fact]
         public void Move_ShouldFailOutsideArea()
         {
             var mockArea = new Mock<IFlightArea>();
-            mockArea.Setup(m => m.IsValidPositionInArea(It.IsAny<Coordinate>()))
-                .Returns((Coordinate c) => c.X == 0 && c.Y == 0);
+            MockUtils.SetAsSinglePointArea(mockArea);
             var mockBackToBaseStrategy = new Mock<IBackToBaseStrategy>();
             var startPosition = new Coordinate(0, 0);
 
             var drone = new Drone(0, mockArea.Object, startPosition, mockBackToBaseStrategy.Object);
-            var moved = drone.Move(1);
+            var moveOk = drone.Move(1);
 
-            Assert.False(moved);
+            Assert.False(moveOk);
             Assert.Equal(startPosition, drone.Position);
             Assert.Single(drone.MovementHistory);
             mockArea.Verify(m => m.IsValidPositionInArea(It.IsAny<Coordinate>()), Times.Exactly(2));
@@ -123,6 +139,21 @@ namespace DroneLibrary.Tests.Drones
 
             Assert.Equal(expectedAngle, drone.Angle);
             Assert.Equal(2, drone.MovementHistory.Count());
+        }
+
+        [Fact]
+        public void Turn_NoAngle()
+        {
+            var mockArea = new Mock<IFlightArea>();
+            MockUtils.SetAsInfiniteFlightArea(mockArea);
+            var mockBackToBaseStrategy = new Mock<IBackToBaseStrategy>();
+            var initialAngle = 90;
+            var drone = new Drone(initialAngle, mockArea.Object, new Coordinate(0, 0), mockBackToBaseStrategy.Object);
+
+            drone.Turn(0);
+
+            Assert.Equal(initialAngle, drone.Angle);
+            Assert.Single(drone.MovementHistory);
         }
 
         #endregion
@@ -160,12 +191,31 @@ namespace DroneLibrary.Tests.Drones
             var mockArea = new Mock<IFlightArea>();
             MockUtils.SetAsInfiniteFlightArea(mockArea);
             var mockBackToBaseStrategy = new Mock<IBackToBaseStrategy>();
-            mockBackToBaseStrategy.Setup(m => m.GoBackToBase(It.IsAny<IDrone>())).Returns(new List<DroneMovement> { new DroneMovement(0, 1) });
+            mockBackToBaseStrategy.Setup(m => m.GoBackToBase(It.IsAny<IDrone>()))
+                .Returns(new List<DroneMovement> { new DroneMovement(0, 1) });
             var drone = new Drone(0, mockArea.Object, new Coordinate(1, 2), mockBackToBaseStrategy.Object);
 
             var wentBackToBase = drone.GoBackToBase();
 
             Assert.False(wentBackToBase);
+            Assert.Equal(2, drone.MovementHistory.Count());
+            mockBackToBaseStrategy.Verify(m => m.GoBackToBase(It.IsAny<IDrone>()), Times.Once());
+        }
+
+        [Fact]
+        public void GoBackToBase_ShouldFailIfGoingOutsideArea()
+        {
+            var mockArea = new Mock<IFlightArea>();
+            MockUtils.SetAsSinglePointArea(mockArea, 1, 2);
+            var mockBackToBaseStrategy = new Mock<IBackToBaseStrategy>();
+            mockBackToBaseStrategy.Setup(m => m.GoBackToBase(It.IsAny<IDrone>()))
+                .Returns(new List<DroneMovement> { new DroneMovement(0, 1), new DroneMovement(0, -1) });
+            var drone = new Drone(0, mockArea.Object, new Coordinate(1, 2), mockBackToBaseStrategy.Object);
+
+            var wentBackToBase = drone.GoBackToBase();
+
+            Assert.False(wentBackToBase);
+            Assert.Single(drone.MovementHistory);
             mockBackToBaseStrategy.Verify(m => m.GoBackToBase(It.IsAny<IDrone>()), Times.Once());
         }
 

@@ -1,5 +1,3 @@
-using System;
-
 namespace DroneLibrary.FlightAreas
 {
     public class RectangularFlightArea : IRectangularFlightArea

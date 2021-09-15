@@ -68,24 +68,6 @@ namespace DroneLibrary.Drones
 
         #region Methods
 
-        public bool GoBackToBase()
-        {
-            IEnumerable<DroneMovement> movements = BackToBaseStrategy.GoBackToBase(this);
-            foreach (var movement in movements)
-            {
-                Turn(movement.Angle);
-                var couldMove = Move(movement.Speed);
-
-                // Stop moving if something went wrong
-                if (!couldMove)
-                {
-                    return false;
-                }
-            }
-            // Check if we actually arrived at the base
-            return Position.AproxEqual(DroneBase);
-        }
-
         public bool Move(double speed)
         {
             bool newPositionIsValid = true;
@@ -113,6 +95,24 @@ namespace DroneLibrary.Drones
                 Angle += angle;
                 _movementHistory.Add(new DroneState(Position, new DroneMovement(angle, 0)));
             }
+        }
+
+        public bool GoBackToBase()
+        {
+            IEnumerable<DroneMovement> movements = BackToBaseStrategy.GoBackToBase(this);
+            foreach (var movement in movements)
+            {
+                Turn(movement.Angle);
+                var couldMove = Move(movement.Speed);
+
+                // Stop moving if something went wrong
+                if (!couldMove)
+                {
+                    return false;
+                }
+            }
+            // Check if we actually arrived at the base
+            return Position.AproxEqual(DroneBase);
         }
 
         #endregion

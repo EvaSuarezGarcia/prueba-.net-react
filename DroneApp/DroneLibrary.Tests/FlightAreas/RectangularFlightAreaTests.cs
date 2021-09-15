@@ -26,7 +26,11 @@ namespace DroneLibrary.Tests.FlightAreas
         [InlineData(5, 4, 0, 4)]  // Upper left corner
         [InlineData(5, 4, 5, 4)]  // Upper right corner
         [InlineData(5, 4, 5, 0)]  // Lower right corner
-        public void IsValidPositionInArea_ShouldBeTrue(int areaMaxX, int areaMaxY, int coordX, int coordY)
+        [InlineData(5, 4, -0.001, 2)]  // Slight deviation to the left
+        [InlineData(5, 4, 5.001, 2)]   // Slight deviation to the right
+        [InlineData(5, 4, 2, 4.001)]   // Slight deviation upwards
+        [InlineData(5, 4, 2, -0.001)]  // Slight deviation downwards
+        public void IsValidPositionInArea_ShouldBeTrue(int areaMaxX, int areaMaxY, double coordX, double coordY)
         {
             RectangularFlightArea area = new RectangularFlightArea(areaMaxX, areaMaxY);
             Coordinate position = new Coordinate(coordX, coordY);
@@ -39,7 +43,11 @@ namespace DroneLibrary.Tests.FlightAreas
         [InlineData(3, 4, 2, -1)] // Outside lower limit
         [InlineData(3, 4, 4, 2)]  // Outside right limit
         [InlineData(3, 4, -1, 2)] // Outside left limit
-        public void IsValidPositionInArea_ShouldBeFalse(int areaMaxX, int areaMaxY, int coordX, int coordY)
+        [InlineData(3, 4, -0.01, 2)]  // Too much deviation to the left
+        [InlineData(3, 4, 3.01, 2)]   // Too much deviation to the right
+        [InlineData(3, 4, 2, 4.01)]   // Too much deviation upwards
+        [InlineData(3, 4, 2, -0.01)]  // Too much deviation downwards
+        public void IsValidPositionInArea_ShouldBeFalse(int areaMaxX, int areaMaxY, double coordX, double coordY)
         {
             RectangularFlightArea area = new RectangularFlightArea(areaMaxX, areaMaxY);
             Coordinate position = new Coordinate(coordX, coordY);
