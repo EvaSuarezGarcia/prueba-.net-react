@@ -8,18 +8,24 @@ namespace DroneLibrary.FlightAreas
 
         public int MaxY { get; }
 
-        public RectangularFlightArea(int maxX, int maxY)
+        public double Tolerance { get; set; }
+
+        public RectangularFlightArea(int maxX, int maxY, double tolerance = 0.001)
         {
             Validation.IsGteTo<int>(nameof(maxX), maxX, 0);
             Validation.IsGteTo<int>(nameof(maxY), maxY, 0);
             MaxX = maxX;
             MaxY = maxY;
+            Tolerance = tolerance;
         }
 
         public bool IsValidPositionInArea(Coordinate coordinate)
         {
-            return 0 <= coordinate.X && coordinate.X <= MaxX
-                && 0 <= coordinate.Y && coordinate.Y <= MaxY;
+            // Allow small errors in movement
+            return 0 - Tolerance <= coordinate.X &&
+                coordinate.X <= MaxX + Tolerance &&
+                0 - Tolerance <= coordinate.Y &&
+                coordinate.Y <= MaxY + Tolerance;
         }
     }
 }
