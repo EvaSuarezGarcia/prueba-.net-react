@@ -1,0 +1,26 @@
+name: DroneApp
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET Core SDK 3.1.412
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 3.1.412
+      - name: Install dependencies
+        run: dotnet restore DroneApp/DroneApp.sln
+      - name: Build
+        run: dotnet build --configuration Release --no-restore DroneApp/DroneApp.sln
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal --logger trx --results-directory "TestResults" DroneApp/DroneApp.sln
+      - name: Upload test results
+        uses: actions/upload-artifact@v2
+        with:
+          name: dotnet-results-3.1.412
+          path: TestResults
+        if: ${{ always() }}
