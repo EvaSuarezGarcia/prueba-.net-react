@@ -27,7 +27,7 @@ namespace DroneLibrary.Tests
 
         private void CreateRectangularAreaAndCheck(SimpleFacade facade, int maxX, int maxY, int expectedId, int expectedAreas)
         {
-            int areaId = facade.CreateRectangularFlightArea(maxX, maxY);
+            var areaId = facade.CreateRectangularFlightArea(maxX, maxY);
 
             Assert.Equal(expectedId, areaId);
             Assert.Equal(expectedAreas, facade._flightAreas.Count);
@@ -45,12 +45,12 @@ namespace DroneLibrary.Tests
         [Fact]
         public void AddDrone_ShouldWork()
         {
-            int areaId = facade.CreateRectangularFlightArea(5, 4);
+            var areaId = facade.CreateRectangularFlightArea(5, 4);
             var expectedDroneId = 0;
             var expectedX = 1;
             var expectedY = 2;
 
-            int droneId = facade.AddDrone(SimpleDroneOrientation.East, areaId, expectedX, expectedY);
+            var droneId = facade.AddDrone(SimpleDroneOrientation.East, areaId, expectedX, expectedY);
 
             Assert.Single(facade._drones);
             Assert.Equal(expectedDroneId, droneId);

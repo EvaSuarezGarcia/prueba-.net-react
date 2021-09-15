@@ -53,7 +53,7 @@ namespace DroneLibrary.Tests.Drones
         public void GoBackToBase_ShouldWork(IEnumerable<DroneState> droneHistory, IEnumerable<DroneMovement> expectedMovements)
         {
             var mockDrone = new Mock<IDrone>();
-            mockDrone.Setup(m => m.MovementHistory).Returns(droneHistory);
+            mockDrone.Setup(m => m.History).Returns(droneHistory);
 
             var strategy = new SimpleSameWayBackStrategy();
             var actualMovements = strategy.GoBackToBase(mockDrone.Object);
@@ -76,7 +76,7 @@ namespace DroneLibrary.Tests.Drones
             var mockArea = new Mock<IFlightArea>();
             MockUtils.SetAsInfiniteFlightArea(mockArea);
             var strategy = new SimpleSameWayBackStrategy();
-            var drone = new Drone(0, mockArea.Object, new Coordinate(1, 2), strategy);
+            var drone = new Drone(mockArea.Object, new Coordinate(1, 2), 0, strategy);
             var expectedMovementHistory = new List<DroneState>()
             {
                 new DroneState(new Coordinate(1, 2), new DroneMovement(0, 0)),
@@ -94,11 +94,11 @@ namespace DroneLibrary.Tests.Drones
             drone.Move(2);
 
             Assert.True(drone.GoBackToBase());
-            Assert.Equal(expectedMovementHistory.Count(), drone.MovementHistory.Count());
+            Assert.Equal(expectedMovementHistory.Count(), drone.History.Count());
             for (int i = 0; i < expectedMovementHistory.Count(); i++)
             {
                 var expectedMovement = expectedMovementHistory[i];
-                var actualMovement = drone.MovementHistory.ElementAt(i);
+                var actualMovement = drone.History.ElementAt(i);
                 Assert.True(expectedMovement.EndPosition.AproxEqual(actualMovement.EndPosition));
                 Assert.Equal(expectedMovement.Movement, actualMovement.Movement);
             }

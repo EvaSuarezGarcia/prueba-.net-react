@@ -27,10 +27,10 @@ namespace DroneLibrary.Drones
 
         public Coordinate DroneBase { get; }
 
-        private IList<DroneState> _movementHistory = new List<DroneState>();
-        public IEnumerable<DroneState> MovementHistory
+        private IList<DroneState> _history = new List<DroneState>();
+        public IEnumerable<DroneState> History
         {
-            get => _movementHistory;
+            get => _history;
         }
 
         public IBackToBaseStrategy BackToBaseStrategy { get; set; }
@@ -41,12 +41,12 @@ namespace DroneLibrary.Drones
 
         #region Ctors
 
-        public Drone(int angle, IFlightArea flightArea, Coordinate position, IBackToBaseStrategy backToBaseStrategy)
-            : this(angle, flightArea, position, position, backToBaseStrategy)
+        public Drone(IFlightArea flightArea, Coordinate position, int angle, IBackToBaseStrategy backToBaseStrategy)
+            : this(flightArea, position, angle, position, backToBaseStrategy)
         {
         }
 
-        public Drone(int angle, IFlightArea flightArea, Coordinate position, Coordinate droneBase, IBackToBaseStrategy backToBaseStrategy)
+        public Drone(IFlightArea flightArea, Coordinate position, int angle, Coordinate droneBase, IBackToBaseStrategy backToBaseStrategy)
         {
             Validation.IsNotNull<IBackToBaseStrategy>(nameof(backToBaseStrategy), backToBaseStrategy);
             Validation.IsNotNull<IFlightArea>(nameof(flightArea), flightArea);
@@ -61,7 +61,7 @@ namespace DroneLibrary.Drones
             DroneBase = droneBase;
             BackToBaseStrategy = backToBaseStrategy;
             FlightArea = flightArea;
-            _movementHistory.Add(new DroneState(Position, new DroneMovement(Angle, 0)));
+            _history.Add(new DroneState(Position, new DroneMovement(Angle, 0)));
         }
 
         #endregion
@@ -81,7 +81,7 @@ namespace DroneLibrary.Drones
                 if (newPositionIsValid)
                 {
                     Position = newPosition;
-                    _movementHistory.Add(new DroneState(Position, new DroneMovement(0, speed)));
+                    _history.Add(new DroneState(Position, new DroneMovement(0, speed)));
                 }
             }
 
@@ -93,7 +93,7 @@ namespace DroneLibrary.Drones
             if (angle != 0)
             {
                 Angle += angle;
-                _movementHistory.Add(new DroneState(Position, new DroneMovement(angle, 0)));
+                _history.Add(new DroneState(Position, new DroneMovement(angle, 0)));
             }
         }
 

@@ -10,7 +10,7 @@ namespace DroneLibrary.Drones
         public int Angle { get; }
         public Coordinate Position { get; }
         public Coordinate DroneBase { get; }
-        public IEnumerable<DroneState> MovementHistory { get; }
+        public IEnumerable<DroneState> History { get; }
         public IBackToBaseStrategy BackToBaseStrategy { get; set; }
         public IFlightArea FlightArea { get; }
         public bool Move(double speed);

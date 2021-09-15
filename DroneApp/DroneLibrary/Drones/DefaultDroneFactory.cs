@@ -5,24 +5,24 @@ namespace DroneLibrary.Drones
 {
     public class DefaultDroneFactory : DroneFactory
     {
-        public override IDrone CreateDrone(int angle, IFlightArea flightArea, Coordinate position, Coordinate droneBase, IBackToBaseStrategy backToBaseStrategy)
+        public override IDrone CreateDrone(IFlightArea flightArea, Coordinate position, int angle, Coordinate droneBase, IBackToBaseStrategy backToBaseStrategy)
         {
-            return new Drone(angle, flightArea, position, droneBase, backToBaseStrategy);
+            return new Drone(flightArea, position, angle, droneBase, backToBaseStrategy);
         }
 
-        public override IDrone CreateDrone(int angle, IFlightArea flightArea, Coordinate position, IBackToBaseStrategy backToBaseStrategy)
+        public override IDrone CreateDrone(IFlightArea flightArea, Coordinate position, int angle, IBackToBaseStrategy backToBaseStrategy)
         {
-            return new Drone(angle, flightArea, position, backToBaseStrategy);
+            return new Drone(flightArea, position, angle, backToBaseStrategy);
         }
 
-        public override IDrone CreateDrone(int angle, IFlightArea flightArea, Coordinate position, Coordinate droneBase)
+        public override IDrone CreateDrone(IFlightArea flightArea, Coordinate position, int angle, Coordinate droneBase)
         {
-            return new Drone(angle, flightArea, position, droneBase, new SimpleSameWayBackStrategy());
+            return new Drone(flightArea, position, angle, droneBase, new SimpleSameWayBackStrategy());
         }
 
-        public override IDrone CreateDrone(int angle, IFlightArea flightArea, Coordinate position)
+        public override IDrone CreateDrone(IFlightArea flightArea, Coordinate position, int angle)
         {
-            return new Drone(angle, flightArea, position, new SimpleSameWayBackStrategy());
+            return new Drone(flightArea, position, angle, new SimpleSameWayBackStrategy());
         }
     }
 }

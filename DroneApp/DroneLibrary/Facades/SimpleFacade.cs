@@ -30,7 +30,7 @@ namespace DroneLibrary.Facades
         public int AddDrone(SimpleDroneOrientation orientation, int flightAreaId, int positionX, int positionY)
         {
             var flightArea = GetElementFromList<IFlightArea>(_flightAreas, flightAreaId, nameof(flightAreaId));
-            _drones.Add(_droneFactory.CreateDrone((int)orientation, flightArea, new Coordinate(positionX, positionY)));
+            _drones.Add(_droneFactory.CreateDrone(flightArea, new Coordinate(positionX, positionY), (int)orientation));
             return _drones.Count - 1;
         }
 

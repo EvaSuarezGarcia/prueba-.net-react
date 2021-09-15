@@ -16,7 +16,7 @@ namespace DroneLibrary.Drones.BackToBaseStrategies
 
             // Turn around and undo movements
             resultMovements.Add(new DroneMovement(180, 0));
-            IEnumerable<DroneState> movementHistory = drone.MovementHistory;
+            IEnumerable<DroneState> movementHistory = drone.History;
             for (int i = movementHistory.Count() - 1; i > 0; i--)
             {
                 var currentMovement = movementHistory.ElementAt(i);

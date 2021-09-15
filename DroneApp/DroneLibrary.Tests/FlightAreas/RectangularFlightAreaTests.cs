@@ -32,8 +32,8 @@ namespace DroneLibrary.Tests.FlightAreas
         [InlineData(5, 4, 2, -0.001)]  // Slight deviation downwards
         public void IsValidPositionInArea_ShouldBeTrue(int areaMaxX, int areaMaxY, double coordX, double coordY)
         {
-            RectangularFlightArea area = new RectangularFlightArea(areaMaxX, areaMaxY);
-            Coordinate position = new Coordinate(coordX, coordY);
+            var area = new RectangularFlightArea(areaMaxX, areaMaxY);
+            var position = new Coordinate(coordX, coordY);
             Assert.True(area.IsValidPositionInArea(position));
         }
 
@@ -49,8 +49,8 @@ namespace DroneLibrary.Tests.FlightAreas
         [InlineData(3, 4, 2, -0.01)]  // Too much deviation downwards
         public void IsValidPositionInArea_ShouldBeFalse(int areaMaxX, int areaMaxY, double coordX, double coordY)
         {
-            RectangularFlightArea area = new RectangularFlightArea(areaMaxX, areaMaxY);
-            Coordinate position = new Coordinate(coordX, coordY);
+            var area = new RectangularFlightArea(areaMaxX, areaMaxY);
+            var position = new Coordinate(coordX, coordY);
             Assert.False(area.IsValidPositionInArea(position));
         }
 
