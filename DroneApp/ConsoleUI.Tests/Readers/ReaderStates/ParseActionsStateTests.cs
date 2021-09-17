@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using ConsoleUI.Data;
 using ConsoleUI.DroneClients;
 using ConsoleUI.Readers;
@@ -20,7 +21,8 @@ namespace ConsoleUI.Tests.Readers.ReaderStates
         public ParseActionsStateTests()
         {
             _mockClient = new Mock<IDroneClient>();
-            _mockReader = new Mock<Reader>(new Mock<StreamReader>("test.txt").Object, _mockClient.Object);
+            var stream = new MemoryStream(Encoding.UTF8.GetBytes(""));
+            _mockReader = new Mock<Reader>(new Mock<StreamReader>(stream).Object, _mockClient.Object);
             _state = new ParseActionsState(_mockReader.Object, _mockClient.Object, _droneState);
         }
 
