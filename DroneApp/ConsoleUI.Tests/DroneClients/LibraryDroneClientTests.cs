@@ -11,13 +11,13 @@ namespace ConsoleUI.Tests.DroneClients
 {
     public class LibraryDroneClientTests
     {
-        private Mock<Writer> writer;
-        private LibraryDroneClient client;
+        private Mock<Writer> _writer;
+        private LibraryDroneClient _client;
 
         public LibraryDroneClientTests()
         {
-            writer = new Mock<Writer>(new Mock<StreamWriter>("test.txt").Object);
-            client = new LibraryDroneClient(writer.Object);
+            _writer = new Mock<Writer>(new Mock<StreamWriter>("test.txt").Object);
+            _client = new LibraryDroneClient(_writer.Object);
         }
 
         #region CreateRectangularFlightArea Tests
@@ -25,25 +25,25 @@ namespace ConsoleUI.Tests.DroneClients
         [Fact]
         public void CreateRectangularFlightArea_ShouldWork()
         {
-            client.CreateRectangularFlightArea(5, 5);
+            _client.CreateRectangularFlightArea(5, 5);
 
-            Assert.NotNull(client._flightAreaId);
+            Assert.NotNull(_client._flightAreaId);
         }
 
         [Fact]
         public void CreateRectangularFlightArea_CanOnlyBeCalledOnce()
         {
-            client.CreateRectangularFlightArea(1, 2);
+            _client.CreateRectangularFlightArea(1, 2);
 
-            Assert.Throws<InvalidOperationException>(() => client.CreateRectangularFlightArea(3, 4));
+            Assert.Throws<InvalidOperationException>(() => _client.CreateRectangularFlightArea(3, 4));
         }
 
         [Fact]
         public void CreateRectangularFlightArea_WritesErrorWithInvalidArguments()
         {
-            client.CreateRectangularFlightArea(-1, 0);
+            _client.CreateRectangularFlightArea(-1, 0);
 
-            writer.Verify(m => m.WriteAreaCreationError(It.IsAny<string>()), Times.Once);
+            _writer.Verify(m => m.WriteAreaCreationError(It.IsAny<string>()), Times.Once);
         }
 
         #endregion
@@ -79,12 +79,12 @@ namespace ConsoleUI.Tests.DroneClients
         public void FlyDrone_ShouldWork(DroneState initialState, DroneState expectedState,
             IEnumerable<DroneAction> actions)
         {
-            client.CreateRectangularFlightArea(2, 2);
-            client.FlyDrone(initialState, actions);
+            _client.CreateRectangularFlightArea(2, 2);
+            _client.FlyDrone(initialState, actions);
 
-            writer.Verify(m => m.WriteFinalDroneState(expectedState), Times.Once);
-            writer.Verify(m => m.WriteDronePathError(), Times.Never);
-            writer.Verify(m => m.WriteDroneBackToBaseError(It.IsAny<DroneState>()), Times.Never);
+            _writer.Verify(m => m.WriteFinalDroneState(expectedState), Times.Once);
+            _writer.Verify(m => m.WriteDronePathError(), Times.Never);
+            _writer.Verify(m => m.WriteDroneBackToBaseError(It.IsAny<DroneState>()), Times.Never);
         }
 
         public static IEnumerable<object[]> FlyDroneNotValidPathData => new List<object[]>
@@ -116,30 +116,30 @@ namespace ConsoleUI.Tests.DroneClients
         public void FlyDrone_ShouldWorkWithNotValidPath(DroneState initialState, DroneState expectedState,
             IEnumerable<DroneAction> actions)
         {
-            client.CreateRectangularFlightArea(2, 2);
-            client.FlyDrone(initialState, actions);
+            _client.CreateRectangularFlightArea(2, 2);
+            _client.FlyDrone(initialState, actions);
 
-            writer.Verify(m => m.WriteFinalDroneState(expectedState), Times.Once);
-            writer.Verify(m => m.WriteDronePathError(), Times.Once);
-            writer.Verify(m => m.WriteDroneBackToBaseError(It.IsAny<DroneState>()), Times.Never);
+            _writer.Verify(m => m.WriteFinalDroneState(expectedState), Times.Once);
+            _writer.Verify(m => m.WriteDronePathError(), Times.Once);
+            _writer.Verify(m => m.WriteDroneBackToBaseError(It.IsAny<DroneState>()), Times.Never);
         }
 
         [Fact]
         public void FlyDrone_ShouldFailWithoutArea()
         {
             Assert.Throws<InvalidOperationException>(() =>
-                client.FlyDrone(new DroneState(1, 2, DroneOrientation.East), new List<DroneAction> { }));
+                _client.FlyDrone(new DroneState(1, 2, DroneOrientation.East), new List<DroneAction> { }));
 
         }
 
         [Fact]
         public void FlyDrone_WritesErrorWithInvalidDroneArguments()
         {
-            client.CreateRectangularFlightArea(5, 5);
+            _client.CreateRectangularFlightArea(5, 5);
 
-            client.FlyDrone(new DroneState(-1, 0, DroneOrientation.North), new List<DroneAction> { });
+            _client.FlyDrone(new DroneState(-1, 0, DroneOrientation.North), new List<DroneAction> { });
 
-            writer.Verify(m => m.WriteDroneCreationError(It.IsAny<string>()), Times.Once);
+            _writer.Verify(m => m.WriteDroneCreationError(It.IsAny<string>()), Times.Once);
         }
 
         #endregion
