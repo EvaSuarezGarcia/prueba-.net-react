@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using ConsoleUI.Data;
 using ConsoleUI.DroneClients;
 using ConsoleUI.Writers;
@@ -15,7 +16,7 @@ namespace ConsoleUI.Tests.DroneClients
 
         public LibraryDroneClientTests()
         {
-            writer = new Mock<Writer>();
+            writer = new Mock<Writer>(new Mock<StreamWriter>("test.txt").Object);
             client = new LibraryDroneClient(writer.Object);
         }
 
