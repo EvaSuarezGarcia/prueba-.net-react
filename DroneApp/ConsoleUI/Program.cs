@@ -11,12 +11,13 @@ namespace ConsoleUI
         {
             var container = ContainerConfig.Configure();
 
-            var inputFile = "SampleInputs/sample.txt";
-
-            if (args.Length > 0)
+            if (args.Length == 0)
             {
-                inputFile = args[0];
+                Console.WriteLine("Please specify the path to the input file.");
+                return;
             }
+
+            var inputFile = args[0];
 
             using (var scope = container.BeginLifetimeScope())
             {
