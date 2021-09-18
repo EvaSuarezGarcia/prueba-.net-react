@@ -1,10 +1,23 @@
 import React from "react";
-import { CssBaseline } from "@mui/material";
-import CardList from "./components/CardList/CardList";
-import { Props as CardListProps } from "./components/CardList/CardList";
+import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import CardList from "./CardList/CardList";
+import CardFormDialog from "./FormDialog/CardFormDialog";
+import { Props as CardListProps } from "./CardList/CardList";
+
+const theme = createTheme({
+    palette: {
+        background: {
+            default: "#eeeeee",
+        },
+    },
+});
+
+export interface State {
+    cards: CardListProps["cards"];
+}
 
 const App: React.FC = () => {
-    const cards: CardListProps["cards"] = [
+    const [cards, setCards] = React.useState<State["cards"]>([
         {
             title: "Gato",
             description: "Gato súper bonito cuqui kawaii desu ne",
@@ -35,13 +48,16 @@ const App: React.FC = () => {
             description: "Gato súper bonito cuqui kawaii desu ne",
             image: "https://estaticos.muyinteresante.es/media/cache/1140x_thumb/uploads/images/gallery/59c4f5655bafe82c692a7052/gato-marron_0.jpg",
         },
-    ];
+    ]);
 
     return (
-        <React.Fragment>
-            <CssBaseline />
-            <CardList cards={cards} />
-        </React.Fragment>
+        <>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <CardList cards={cards} />
+                <CardFormDialog cards={cards} setCards={setCards} />
+            </ThemeProvider>
+        </>
     );
 };
 

@@ -23,7 +23,7 @@ const CardList: FC<Props> = ({ cards }) => {
     };
 
     return (
-        <Grid container spacing={4} padding={4} bgcolor={"grey.200"}>
+        <Grid container spacing={4} padding={4}>
             {renderCards()}
         </Grid>
     );
