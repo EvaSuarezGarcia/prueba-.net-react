@@ -95,7 +95,7 @@ namespace ConsoleUI.DroneClients
                     resultOrientation = SimpleDroneOrientation.South;
                     break;
                 default:
-                    throw new ArgumentException("Provided drone orientation is not valid", paramName);
+                    throw new ArgumentException("Provided drone orientation is not valid.", paramName);
             }
 
             return resultOrientation;
@@ -122,7 +122,7 @@ namespace ConsoleUI.DroneClients
                     resultOrientation = DroneOrientation.South;
                     break;
                 default:
-                    throw new ArgumentException("Provided drone orientation is not valid");
+                    throw new ArgumentException("Provided drone orientation is not valid.");
             }
 
             return resultOrientation;
@@ -146,7 +146,7 @@ namespace ConsoleUI.DroneClients
                         resultActions.Add(SimpleDroneAction.TurnRight);
                         break;
                     default:
-                        throw new ArgumentException($"Detected invalid action: {action}", paramName);
+                        throw new ArgumentException($"Detected invalid action: {action}.", paramName);
                 }
             }
 

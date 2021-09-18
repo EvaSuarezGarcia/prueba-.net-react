@@ -10,11 +10,11 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/DroneApp/DroneLibrary.Tests/bin/Debug/netcoreapp3.1/DroneLibrary.Tests.dll",
+            "program": "${workspaceFolder}/DroneApp/ConsoleUI/bin/Debug/netcoreapp3.1/ConsoleUI.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/DroneApp/DroneLibrary.Tests",
+            "cwd": "${workspaceFolder}/DroneApp/ConsoleUI",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
-            "console": "internalConsole",
+            "console": "integratedTerminal",
             "stopAtEntry": false
         },
         {

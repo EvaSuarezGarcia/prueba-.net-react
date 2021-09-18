@@ -1,9 +1,10 @@
+using System;
 using System.IO;
 using ConsoleUI.DroneClients;
 
 namespace ConsoleUI.Readers
 {
-    public abstract class Reader
+    public abstract class Reader : IDisposable
     {
         public ReaderState State { get; set; }
 
@@ -15,5 +16,13 @@ namespace ConsoleUI.Readers
         }
 
         public abstract void Read();
+
+        public void Dispose()
+        {
+            if (StreamReader != null)
+            {
+                StreamReader.Dispose();
+            }
+        }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using ConsoleUI.DroneClients;
 using ConsoleUI.Readers.ReaderStates;
@@ -14,9 +15,24 @@ namespace ConsoleUI.Readers
         public override void Read()
         {
             string line;
-            while ((line = StreamReader.ReadLine()) != null)
+            int lineNumber = 1;
+
+            try
             {
-                State.Parse(line);
+                while ((line = StreamReader.ReadLine()) != null)
+                {
+                    State.Parse(line.Trim());
+                    lineNumber++;
+                }
+            }
+            catch (ArgumentException e)
+            {
+                Console.WriteLine($"Error parsing line nº {lineNumber}: {e.Message}");
+            }
+
+            if (!State.IsFinalState)
+            {
+                Console.WriteLine($"Warning: Input is missing data, some lines may have been ignored.");
             }
         }
     }

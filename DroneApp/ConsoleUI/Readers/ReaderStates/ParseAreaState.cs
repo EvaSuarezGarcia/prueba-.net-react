@@ -9,6 +9,7 @@ namespace ConsoleUI.Readers.ReaderStates
         public ParseAreaState(Reader reader, IDroneClient droneClient) : base(reader, droneClient)
         {
             RegexValidator = new RegexStringValidator(@"^[0-9]+ [0-9]+$");
+            IsFinalState = false;
         }
 
         public override void Parse(string text)

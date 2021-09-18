@@ -7,9 +7,11 @@ namespace ConsoleUI.Readers.ReaderStates
 {
     public class ParseDroneState : ReaderState
     {
-        public ParseDroneState(Reader reader, IDroneClient droneClient) : base(reader, droneClient)
+        public ParseDroneState(Reader reader, IDroneClient droneClient, bool isFinalState = false)
+            : base(reader, droneClient)
         {
             RegexValidator = new RegexStringValidator(@"^[0-9]+ [0-9]+ [NESW]$");
+            IsFinalState = isFinalState;
         }
 
         public override void Parse(string text)

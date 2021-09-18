@@ -15,6 +15,7 @@ namespace ConsoleUI.Readers.ReaderStates
         {
             RegexValidator = new RegexStringValidator(@"^[LRM]+$");
             InitialState = initialState;
+            IsFinalState = false;
         }
 
         public override void Parse(string text)
@@ -28,7 +29,7 @@ namespace ConsoleUI.Readers.ReaderStates
             }
             DroneClient.FlyDrone(InitialState, actions);
 
-            Reader.State = new ParseDroneState(Reader, DroneClient);
+            Reader.State = new ParseDroneState(Reader, DroneClient, true);
         }
 
         private DroneAction ParseDroneAction(char letter)

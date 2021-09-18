@@ -33,6 +33,7 @@ namespace ConsoleUI.Tests.Readers.ReaderStates
 
             _mockClient.Verify(m => m.CreateRectangularFlightArea(expectedX, expectedY));
             Assert.IsType<ParseDroneState>(_mockReader.Object.State);
+            Assert.False(_mockReader.Object.State.IsFinalState);
         }
 
         [Theory]

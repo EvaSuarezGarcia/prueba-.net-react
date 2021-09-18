@@ -53,6 +53,7 @@ namespace ConsoleUI.Tests.Readers.ReaderStates
 
             _mockClient.Verify(m => m.FlyDrone(_droneState, expectedActions), Times.Once);
             Assert.IsType<ParseDroneState>(_mockReader.Object.State);
+            Assert.True(_mockReader.Object.State.IsFinalState);
         }
 
         [Theory]

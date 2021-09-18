@@ -15,23 +15,23 @@ namespace ConsoleUI.Writers
 
         public virtual void WriteAreaCreationError(string message)
         {
-            StreamWriter.WriteLine($"Error creating area: {message}");
+            StreamWriter.WriteLine($"Error creating area: {message}.");
         }
 
         public virtual void WriteDroneBackToBaseError(DroneState lastState)
         {
             StreamWriter.WriteLine("Error: Drone could not go back to base. " +
-                $"Last known position was: ({lastState.PositionX}, {lastState.PositionY})");
+                $"Last known position was: ({lastState.PositionX}, {lastState.PositionY}).");
         }
 
         public virtual void WriteDroneCreationError(string message)
         {
-            StreamWriter.WriteLine($"Error creating drone: {message}");
+            StreamWriter.WriteLine($"Error creating drone: {message}.");
         }
 
         public virtual void WriteDronePathError()
         {
-            StreamWriter.WriteLine($"Error: Path for drone was not valid. Drone was sent back to its base");
+            StreamWriter.WriteLine($"Error: Path for drone was not valid. Drone was sent back to its base.");
         }
 
         public abstract void WriteFinalDroneState(DroneState state);
