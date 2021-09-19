@@ -118,6 +118,7 @@ const InfoCard: FC<InfoCardProps> = ({
                     dialogTitle={Constants.EDIT_CARD}
                     dialogButton={Constants.EDIT}
                     initialCardData={data}
+                    clearOnSubmit={false}
                 />
                 <CardActionDialog
                     open={showDeleteDialog}

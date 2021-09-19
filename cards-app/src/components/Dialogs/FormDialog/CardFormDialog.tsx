@@ -16,6 +16,7 @@ export interface CardFormDialogProps {
     handleClose: () => void;
     dialogTitle: string;
     dialogButton: string;
+    clearOnSubmit: boolean;
     initialCardData: InfoCardData;
 }
 
@@ -25,6 +26,7 @@ const CardFormDialog: React.FC<CardFormDialogProps> = ({
     handleClose: externalHandleClose,
     dialogTitle,
     dialogButton,
+    clearOnSubmit,
     initialCardData,
 }) => {
     // Form state and handlers
@@ -57,7 +59,11 @@ const CardFormDialog: React.FC<CardFormDialogProps> = ({
                 image: input.cardData.image || Constants.DEFAULT_IMAGE_URL,
                 key: input.cardData.key || new Date().getTime(),
             });
-            externalHandleClose();
+            if (clearOnSubmit) {
+                handleClose();
+            } else {
+                externalHandleClose();
+            }
         }
     };
 

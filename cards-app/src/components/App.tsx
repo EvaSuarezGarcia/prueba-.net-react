@@ -73,6 +73,7 @@ const App: React.FC = () => {
                     handleClose={handleCloseAddDialog}
                     dialogTitle={Constants.NEW_CARD}
                     dialogButton={Constants.ADD}
+                    clearOnSubmit={true}
                     initialCardData={{
                         title: "",
                         description: "",
