@@ -38,6 +38,7 @@ const InfoCard: FC<InfoCardProps> = ({
 
     const handleClickOpenEditDialog = () => {
         setShowEditDialog(true);
+        setShowActions(false);
     };
 
     const handleCloseEditDialog = () => {
@@ -48,6 +49,7 @@ const InfoCard: FC<InfoCardProps> = ({
 
     const handleClickOpenDeleteDialog = () => {
         setShowDeleteDialog(true);
+        setShowActions(false);
     };
 
     const handleCloseDeleteDialog = () => {

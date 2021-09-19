@@ -22,7 +22,6 @@ const CardForm: FC<Props> = ({ input, handleChange }) => {
         <>
             <CardTextField
                 autoFocus
-                id="title-input"
                 label="Title"
                 name="title"
                 value={input.cardData.title}
@@ -34,7 +33,6 @@ const CardForm: FC<Props> = ({ input, handleChange }) => {
                 }
             />
             <CardTextField
-                id="description-input"
                 label="Description"
                 name="description"
                 value={input.cardData.description}
@@ -47,19 +45,13 @@ const CardForm: FC<Props> = ({ input, handleChange }) => {
                 required
             />
             <CardTextField
-                id="image-input"
                 label="Image (URL)"
                 type="url"
                 name="image"
                 value={input.cardData.image}
                 onChange={handleChange}
             />
-            <input
-                id="key-input"
-                type="hidden"
-                name="key"
-                value={input.cardData.key}
-            />
+            <input type="hidden" name="key" value={input.cardData.key} />
         </>
     );
 };
