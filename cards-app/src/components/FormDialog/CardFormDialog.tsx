@@ -16,7 +16,7 @@ export interface CardFormDialogProps {
     handleClose: () => void;
     dialogTitle: string;
     dialogButton: string;
-    initialInput: CardFormInput;
+    initialCardData: InfoCardData;
 }
 
 const CardFormDialog: React.FC<CardFormDialogProps> = ({
@@ -25,13 +25,13 @@ const CardFormDialog: React.FC<CardFormDialogProps> = ({
     handleClose: externalHandleClose,
     dialogTitle,
     dialogButton,
-    initialInput,
+    initialCardData,
 }) => {
     // Form state and handlers
     const [input, setInput] = React.useState<CardFormInput>({
-        cardData: initialInput.cardData,
-        titleError: initialInput.titleError,
-        descriptionError: initialInput.descriptionError,
+        cardData: initialCardData,
+        titleError: false,
+        descriptionError: false,
     });
 
     const handleChange = (
@@ -63,9 +63,9 @@ const CardFormDialog: React.FC<CardFormDialogProps> = ({
 
     const handleClose = () => {
         setInput({
-            cardData: initialInput.cardData,
-            titleError: initialInput.titleError,
-            descriptionError: initialInput.descriptionError,
+            cardData: initialCardData,
+            titleError: false,
+            descriptionError: false,
         });
         externalHandleClose();
     };

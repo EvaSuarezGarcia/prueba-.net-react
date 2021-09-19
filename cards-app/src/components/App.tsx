@@ -2,9 +2,10 @@ import React from "react";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import CardList from "./CardList/CardList";
 import CardFormDialog from "./FormDialog/CardFormDialog";
-import { Props as CardListProps } from "./CardList/CardList";
+import { CardListProps } from "./CardList/CardList";
 import { InfoCardData } from "./CardList/InfoCard/InfoCard";
 import AddFab from "./Buttons/AddFab";
+import * as Constants from "../Constants";
 
 const theme = createTheme({
     palette: {
@@ -14,24 +15,9 @@ const theme = createTheme({
     },
 });
 
-export interface State {
-    cards: CardListProps["cards"];
-}
-
 const App: React.FC = () => {
-    // --- Add card dialog ---
-    const [showAddDialog, setShowAddDialog] = React.useState(false);
-
-    const handleClickOpenAddDialog = () => {
-        setShowAddDialog(true);
-    };
-
-    const handleCloseAddDialog = () => {
-        setShowAddDialog(false);
-    };
-
     // --- Cards list ---
-    const [cards, setCards] = React.useState<State["cards"]>([
+    const [cards, setCards] = React.useState<CardListProps["cards"]>([
         {
             title: "Gato",
             description: "Gato súper bonito cuqui kawaii desu ne",
@@ -70,10 +56,22 @@ const App: React.FC = () => {
         },
     ]);
 
+    // --- Add card dialog ---
+    const [showAddDialog, setShowAddDialog] = React.useState(false);
+
+    const handleClickOpenAddDialog = () => {
+        setShowAddDialog(true);
+    };
+
+    const handleCloseAddDialog = () => {
+        setShowAddDialog(false);
+    };
+
     const addCard = (card: InfoCardData) => {
         setCards([...cards, card]);
     };
 
+    // --- Edit card dialog callback ---
     const editCard = (card: InfoCardData) => {
         const newCards = cards.map((thisCard) => {
             if (thisCard.key === card.key) {
@@ -95,17 +93,13 @@ const App: React.FC = () => {
                     open={showAddDialog}
                     callback={addCard}
                     handleClose={handleCloseAddDialog}
-                    dialogTitle="Nueva tarjeta"
-                    dialogButton="Añadir"
-                    initialInput={{
-                        cardData: {
-                            title: "",
-                            description: "",
-                            image: "",
-                            key: 0,
-                        },
-                        titleError: false,
-                        descriptionError: false,
+                    dialogTitle={Constants.NEW_CARD}
+                    dialogButton={Constants.ADD}
+                    initialCardData={{
+                        title: "",
+                        description: "",
+                        image: "",
+                        key: 0,
                     }}
                 />
             </ThemeProvider>

@@ -9,6 +9,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import React from "react";
 import CardFormDialog from "../../FormDialog/CardFormDialog";
+import * as Constants from "../../../Constants";
 
 export interface InfoCardData {
     title: string;
@@ -90,13 +91,9 @@ const InfoCard: FC<InfoCardProps> = ({ data, editCard }) => {
                     open={showEditDialog}
                     handleClose={handleCloseEditDialog}
                     callback={editCard}
-                    dialogTitle="Editar tarjeta"
-                    dialogButton="Editar"
-                    initialInput={{
-                        cardData: data,
-                        titleError: false,
-                        descriptionError: false,
-                    }}
+                    dialogTitle={Constants.EDIT_CARD}
+                    dialogButton={Constants.EDIT}
+                    initialCardData={data}
                 />
             </CardContent>
         </Card>

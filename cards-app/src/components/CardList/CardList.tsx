@@ -3,12 +3,12 @@ import { Grid } from "@mui/material";
 import InfoCard from "./InfoCard/InfoCard";
 import { InfoCardData } from "./InfoCard/InfoCard";
 
-export interface Props {
+export interface CardListProps {
     cards: InfoCardData[];
     editCard: (card: InfoCardData) => void;
 }
 
-const CardList: FC<Props> = ({ cards, editCard }) => {
+const CardList: FC<CardListProps> = ({ cards, editCard }) => {
     const renderCards = (): ReactElement[] => {
         return cards.map((card) => {
             return (
