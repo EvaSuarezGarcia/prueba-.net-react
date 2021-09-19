@@ -1,4 +1,8 @@
 describe("Card App", () => {
+    const title = "Test";
+    const description = "Description test";
+    const img = "https://ichef.bbci.co.uk/news/640/cpsprodpb/10E9B/production/_109757296_gettyimages-1128004359.jpg";
+
     beforeEach(() => {
         cy.visit("http://localhost:3000");
     });
@@ -9,27 +13,22 @@ describe("Card App", () => {
 
     it("can create a card without image", () => {
         cy.get("[aria-label='add']").click();
-        cy.get("[name='title']").type("Test");
-        cy.get("textarea[name='description']").type("Description test");
+        cy.get("[name='title']").type(title);
+        cy.get("textarea[name='description']").type(description);
         cy.contains("Añadir").click();
-        cy.contains("Test").parent("div").siblings("img").should("have.attr", "src").should("include", "gato-marron");
+        cy.contains(title).parent("div").siblings("img").should("have.attr", "src").should("include", "gato-marron");
     });
-
-    const img = "https://es.himgs.com/imagenes/estar-bien/20210217184541/gatos-gestos-lenguaje-significado/0-922-380/gatos-gestos-m.jpg";
 
     it("can create a card with image", () => {
         cy.get("[aria-label='add']").click();
-        cy.get("[name='title']").type("Test 2");
-        cy.get("textarea[name='description']").type("Description test 2");
+        cy.get("[name='title']").type(title);
+        cy.get("textarea[name='description']").type(description);
         cy.get("[name='image']").type(img);
         cy.contains("Añadir").click();
-        cy.contains("Test 2").parent("div").siblings("img").should("have.attr", "src").should("include", img);
+        cy.contains(title).parent("div").siblings("img").should("have.attr", "src").should("include", img);
     });
 
     describe("when a card exists", () => {
-        const title = "Test";
-        const description = "Description test";
-
         beforeEach(() => {
             cy.get("[aria-label='add']").click();
             cy.get("[name='title']").type(title);
@@ -61,6 +60,11 @@ describe("Card App", () => {
             cy.get("[aria-label='delete']").click();
             cy.get("button").contains("Eliminar").click();
             cy.contains(title).should("not.exist");
+        });
+
+        it("card is saved", () => {
+            cy.reload();
+            cy.contains(title);
         });
     });
 });

@@ -17,44 +17,13 @@ const theme = createTheme({
 
 const App: React.FC = () => {
     // --- Cards list ---
-    const [cards, setCards] = React.useState<CardListProps["cards"]>([
-        {
-            title: "Gato",
-            description: "Gato súper bonito cuqui kawaii desu ne",
-            image: "https://estaticos.muyinteresante.es/media/cache/1140x_thumb/uploads/images/gallery/59c4f5655bafe82c692a7052/gato-marron_0.jpg",
-            key: 1,
-        },
-        {
-            title: "Gato",
-            description: "Gato súper bonito cuqui kawaii desu ne",
-            image: "https://es.himgs.com/imagenes/estar-bien/20210217184541/gatos-gestos-lenguaje-significado/0-922-380/gatos-gestos-m.jpg",
-            key: 2,
-        },
-        {
-            title: "Gato",
-            description: "Gato súper bonito cuqui kawaii desu ne",
-            image: "https://estaticos.muyinteresante.es/media/cache/1140x_thumb/uploads/images/gallery/59c4f5655bafe82c692a7052/gato-marron_0.jpg",
-            key: 3,
-        },
-        {
-            title: "Gato",
-            description: "Gato súper bonito cuqui kawaii desu ne",
-            image: "https://estaticos.muyinteresante.es/media/cache/1140x_thumb/uploads/images/gallery/59c4f5655bafe82c692a7052/gato-marron_0.jpg",
-            key: 4,
-        },
-        {
-            title: "Gato",
-            description: "Gato súper bonito cuqui kawaii desu ne",
-            image: "https://estaticos.muyinteresante.es/media/cache/1140x_thumb/uploads/images/gallery/59c4f5655bafe82c692a7052/gato-marron_0.jpg",
-            key: 5,
-        },
-        {
-            title: "Gato",
-            description: "Gato súper bonito cuqui kawaii desu ne",
-            image: "https://estaticos.muyinteresante.es/media/cache/1140x_thumb/uploads/images/gallery/59c4f5655bafe82c692a7052/gato-marron_0.jpg",
-            key: 6,
-        },
-    ]);
+    const [cards, setCards] = React.useState<CardListProps["cards"]>(
+        JSON.parse(localStorage.getItem("cards") || "[]")
+    );
+
+    React.useEffect(() => {
+        localStorage.setItem("cards", JSON.stringify(cards));
+    }, [cards]);
 
     // --- Add card dialog ---
     const [showAddDialog, setShowAddDialog] = React.useState(false);
