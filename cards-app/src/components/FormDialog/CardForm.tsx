@@ -2,17 +2,16 @@ import React from "react";
 import { FC } from "react";
 import CardTextField from "./CardFormTextField";
 import * as Constants from "../../Constants";
+import { InfoCardData } from "../CardList/InfoCard/InfoCard";
 
-export interface InputProps {
-    title: string;
+export interface CardFormInput {
+    cardData: InfoCardData;
     titleError: boolean;
-    description: string;
     descriptionError: boolean;
-    image: string;
 }
 
 interface Props {
-    input: InputProps;
+    input: CardFormInput;
     handleChange: React.Dispatch<
         React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     >;
@@ -26,7 +25,7 @@ const CardForm: FC<Props> = ({ input, handleChange }) => {
                 id="title-input"
                 label="Title"
                 name="title"
-                value={input.title}
+                value={input.cardData.title}
                 onChange={handleChange}
                 required
                 error={input.titleError}
@@ -38,7 +37,7 @@ const CardForm: FC<Props> = ({ input, handleChange }) => {
                 id="description-input"
                 label="Description"
                 name="description"
-                value={input.description}
+                value={input.cardData.description}
                 onChange={handleChange}
                 error={input.descriptionError}
                 helperText={
@@ -52,8 +51,14 @@ const CardForm: FC<Props> = ({ input, handleChange }) => {
                 label="Image (URL)"
                 type="url"
                 name="image"
-                value={input.image}
+                value={input.cardData.image}
                 onChange={handleChange}
+            />
+            <input
+                id="key-input"
+                type="hidden"
+                name="key"
+                value={input.cardData.key}
             />
         </>
     );

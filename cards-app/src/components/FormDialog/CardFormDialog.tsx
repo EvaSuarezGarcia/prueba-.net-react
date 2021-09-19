@@ -1,8 +1,5 @@
-import React from "react";
-import { FC } from "react";
-import CardForm, { InputProps as InputState } from "./CardForm";
-import { Props as InfoCardProps } from "../CardList/InfoCard/InfoCard";
-import * as Constants from "../../Constants";
+import CardForm, { CardFormInput } from "./CardForm";
+import { InfoCardData } from "../CardList/InfoCard/InfoCard";
 import {
     Button,
     Dialog,
@@ -10,77 +7,79 @@ import {
     DialogContent,
     DialogTitle,
 } from "@mui/material";
+import React from "react";
+import * as Constants from "../../Constants";
 
-interface Props {
-    callbackCard: (card: InfoCardProps) => void;
-    dialogOpenButton: React.ReactElement;
+export interface CardFormDialogProps {
+    open: boolean;
+    callback: (card: InfoCardData) => void;
+    handleClose: () => void;
+    dialogTitle: string;
+    dialogButton: string;
+    initialInput: CardFormInput;
 }
 
-const CardFormDialog: FC<Props> = ({ callbackCard, dialogOpenButton }) => {
+const CardFormDialog: React.FC<CardFormDialogProps> = ({
+    open,
+    callback,
+    handleClose: externalHandleClose,
+    dialogTitle,
+    dialogButton,
+    initialInput,
+}) => {
     // Form state and handlers
-    const [input, setInput] = React.useState<InputState>({
-        title: "",
-        titleError: false,
-        description: "",
-        descriptionError: false,
-        image: "",
+    const [input, setInput] = React.useState<CardFormInput>({
+        cardData: initialInput.cardData,
+        titleError: initialInput.titleError,
+        descriptionError: initialInput.descriptionError,
     });
 
     const handleChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ): void => {
-        setInput({ ...input, [e.target.name]: e.target.value });
-    };
-
-    const handleClickSubmit = (): void => {
-        if (!input.title) {
-            setInput({
-                ...input,
-                titleError: !input.title,
-                descriptionError: !input.description,
-            });
-        } else {
-            callbackCard({
-                title: input.title,
-                description: input.description,
-                image: input.image || Constants.DEFAULT_IMAGE_URL,
-                key: new Date().getTime(),
-            });
-            handleClose();
-        }
-    };
-
-    // Modal state and handlers
-    const [open, setOpen] = React.useState(false);
-
-    const handleClickOpen = (): void => {
-        setOpen(true);
-    };
-
-    const handleClose = (): void => {
-        setOpen(false);
         setInput({
-            title: "",
-            titleError: false,
-            description: "",
-            descriptionError: false,
-            image: "",
+            ...input,
+            cardData: { ...input.cardData, [e.target.name]: e.target.value },
         });
     };
 
+    const handleClickSubmit = (): void => {
+        if (!input.cardData.title || !input.cardData.description) {
+            setInput({
+                ...input,
+                titleError: !input.cardData.title,
+                descriptionError: !input.cardData.description,
+            });
+        } else {
+            callback({
+                title: input.cardData.title,
+                description: input.cardData.description,
+                image: input.cardData.image || Constants.DEFAULT_IMAGE_URL,
+                key: input.cardData.key || new Date().getTime(),
+            });
+            externalHandleClose();
+        }
+    };
+
+    const handleClose = () => {
+        setInput({
+            cardData: initialInput.cardData,
+            titleError: initialInput.titleError,
+            descriptionError: initialInput.descriptionError,
+        });
+        externalHandleClose();
+    };
+
     return (
-        <>
-            {React.cloneElement(dialogOpenButton, { onClick: handleClickOpen })}
-            <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Nueva tarjeta</DialogTitle>
-                <DialogContent>
-                    <CardForm input={input} handleChange={handleChange} />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClickSubmit}>Añadir</Button>
-                </DialogActions>
-            </Dialog>
-        </>
+        <Dialog open={open} onClose={handleClose}>
+            <DialogTitle>{dialogTitle}</DialogTitle>
+            <DialogContent>
+                <CardForm input={input} handleChange={handleChange} />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleClickSubmit}>{dialogButton}</Button>
+            </DialogActions>
+        </Dialog>
     );
 };
 

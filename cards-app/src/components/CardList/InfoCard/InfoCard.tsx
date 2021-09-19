@@ -1,19 +1,57 @@
 import { FC } from "react";
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import {
+    Card,
+    CardContent,
+    CardMedia,
+    IconButton,
+    Typography,
+} from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import React from "react";
+import CardFormDialog from "../../FormDialog/CardFormDialog";
 
-export interface Props {
+export interface InfoCardData {
     title: string;
     description: string;
     image: string;
     key: number;
 }
 
-const InfoCard: FC<Props> = ({ title, description, image, key }) => {
+interface InfoCardProps {
+    data: InfoCardData;
+    editCard: (card: InfoCardProps["data"]) => void;
+}
+
+const InfoCard: FC<InfoCardProps> = ({ data, editCard }) => {
+    const [showActions, setShowActions] = React.useState(false);
+
+    const handleMouseEnter = () => {
+        setShowActions(true);
+    };
+
+    const handleMouseLeave = () => {
+        setShowActions(false);
+    };
+
+    const [showEditDialog, setShowEditDialog] = React.useState(false);
+
+    const handleClickOpenEditDialog = () => {
+        setShowEditDialog(true);
+    };
+
+    const handleCloseEditDialog = () => {
+        setShowEditDialog(false);
+    };
+
     return (
-        <Card key={key} sx={{ position: "relative" }}>
+        <Card
+            sx={{ position: "relative" }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+        >
             <CardMedia
                 component="img"
-                image={image}
+                image={data.image}
                 sx={{ height: 200 }}
             ></CardMedia>
             <CardContent sx={{ height: 100 }}>
@@ -25,7 +63,7 @@ const InfoCard: FC<Props> = ({ title, description, image, key }) => {
                         color: "common.white",
                     }}
                 >
-                    {title}
+                    {data.title}
                 </Typography>
                 <Typography
                     variant="body2"
@@ -37,8 +75,29 @@ const InfoCard: FC<Props> = ({ title, description, image, key }) => {
                         WebkitBoxOrient: "vertical",
                     }}
                 >
-                    {description}
+                    {data.description}
                 </Typography>
+                {showActions && (
+                    <IconButton
+                        aria-label="edit"
+                        sx={{ position: "absolute", top: 5, right: 5 }}
+                        onClick={handleClickOpenEditDialog}
+                    >
+                        <EditIcon />
+                    </IconButton>
+                )}
+                <CardFormDialog
+                    open={showEditDialog}
+                    handleClose={handleCloseEditDialog}
+                    callback={editCard}
+                    dialogTitle="Editar tarjeta"
+                    dialogButton="Editar"
+                    initialInput={{
+                        cardData: data,
+                        titleError: false,
+                        descriptionError: false,
+                    }}
+                />
             </CardContent>
         </Card>
     );
