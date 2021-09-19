@@ -1,8 +1,15 @@
 import React from "react";
 import { FC } from "react";
-import { InputState as InputProps } from "./CardFormDialog";
 import CardTextField from "./CardFormTextField";
 import * as Constants from "../../Constants";
+
+export interface InputProps {
+    title: string;
+    titleError: boolean;
+    description: string;
+    descriptionError: boolean;
+    image: string;
+}
 
 interface Props {
     input: InputProps;

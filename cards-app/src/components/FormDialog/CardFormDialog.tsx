@@ -1,30 +1,22 @@
 import React from "react";
 import { FC } from "react";
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import AddIcon from "@mui/icons-material/Add";
-import { Fab } from "@mui/material";
-import { State as AppState } from "../App";
-import CardForm from "./CardForm";
+import CardForm, { InputProps as InputState } from "./CardForm";
+import { Props as InfoCardProps } from "../CardList/InfoCard/InfoCard";
 import * as Constants from "../../Constants";
+import {
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+} from "@mui/material";
 
 interface Props {
-    cards: AppState["cards"];
-    setCards: React.Dispatch<React.SetStateAction<AppState["cards"]>>;
+    callbackCard: (card: InfoCardProps) => void;
+    dialogOpenButton: React.ReactElement;
 }
 
-export interface InputState {
-    title: string;
-    titleError: boolean;
-    description: string;
-    descriptionError: boolean;
-    image: string;
-}
-
-const CardFormDialog: FC<Props> = ({ cards, setCards }) => {
+const CardFormDialog: FC<Props> = ({ callbackCard, dialogOpenButton }) => {
     // Form state and handlers
     const [input, setInput] = React.useState<InputState>({
         title: "",
@@ -40,7 +32,7 @@ const CardFormDialog: FC<Props> = ({ cards, setCards }) => {
         setInput({ ...input, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (): void => {
+    const handleClickSubmit = (): void => {
         if (!input.title) {
             setInput({
                 ...input,
@@ -48,14 +40,12 @@ const CardFormDialog: FC<Props> = ({ cards, setCards }) => {
                 descriptionError: !input.description,
             });
         } else {
-            setCards([
-                ...cards,
-                {
-                    title: input.title,
-                    description: input.description,
-                    image: input.image || Constants.DEFAULT_IMAGE_URL,
-                },
-            ]);
+            callbackCard({
+                title: input.title,
+                description: input.description,
+                image: input.image || Constants.DEFAULT_IMAGE_URL,
+                key: new Date().getTime(),
+            });
             handleClose();
         }
     };
@@ -80,25 +70,14 @@ const CardFormDialog: FC<Props> = ({ cards, setCards }) => {
 
     return (
         <>
-            <Fab
-                sx={{
-                    position: "fixed",
-                    bottom: 30,
-                    right: 30,
-                }}
-                color="primary"
-                aria-label="add"
-                onClick={handleClickOpen}
-            >
-                <AddIcon />
-            </Fab>
+            {React.cloneElement(dialogOpenButton, { onClick: handleClickOpen })}
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Nueva tarjeta</DialogTitle>
                 <DialogContent>
                     <CardForm input={input} handleChange={handleChange} />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleSubmit}>Añadir</Button>
+                    <Button onClick={handleClickSubmit}>Añadir</Button>
                 </DialogActions>
             </Dialog>
         </>

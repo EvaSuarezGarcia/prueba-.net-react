@@ -16,6 +16,7 @@ const CardList: FC<Props> = ({ cards }) => {
                         title={card.title}
                         description={card.description}
                         image={card.image}
+                        key={card.key}
                     />
                 </Grid>
             );

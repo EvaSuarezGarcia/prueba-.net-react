@@ -5,11 +5,12 @@ export interface Props {
     title: string;
     description: string;
     image: string;
+    key: number;
 }
 
-const InfoCard: FC<Props> = ({ title, description, image }) => {
+const InfoCard: FC<Props> = ({ title, description, image, key }) => {
     return (
-        <Card sx={{ position: "relative" }}>
+        <Card key={key} sx={{ position: "relative" }}>
             <CardMedia
                 component="img"
                 image={image}
