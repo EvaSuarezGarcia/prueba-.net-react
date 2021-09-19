@@ -12,8 +12,8 @@ jobs:
             # Install NPM dependencies, cache them correctly
             # and run all Cypress tests
             - name: Cypress run
-              working-directory: ./cards-app
               uses: cypress-io/github-action@v2
               with:
+                  working-directory: cards-app
                   build: npm run build
                   start: npm start
