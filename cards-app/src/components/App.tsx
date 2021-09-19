@@ -1,7 +1,7 @@
 import React from "react";
 import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import CardList from "./CardList/CardList";
-import CardFormDialog from "./FormDialog/CardFormDialog";
+import CardFormDialog from "./Dialogs/FormDialog/CardFormDialog";
 import { CardListProps } from "./CardList/CardList";
 import { InfoCardData } from "./CardList/InfoCard/InfoCard";
 import AddFab from "./Buttons/AddFab";
@@ -83,11 +83,20 @@ const App: React.FC = () => {
         setCards(newCards);
     };
 
+    const deleteCard = (cardKey: InfoCardData["key"]) => {
+        const newCards = cards.filter((card) => card.key !== cardKey);
+        setCards(newCards);
+    };
+
     return (
         <>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                <CardList cards={cards} editCard={editCard} />
+                <CardList
+                    cards={cards}
+                    editCard={editCard}
+                    deleteCard={deleteCard}
+                />
                 <AddFab onClick={handleClickOpenAddDialog} />
                 <CardFormDialog
                     open={showAddDialog}

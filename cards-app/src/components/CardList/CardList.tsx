@@ -6,14 +6,19 @@ import { InfoCardData } from "./InfoCard/InfoCard";
 export interface CardListProps {
     cards: InfoCardData[];
     editCard: (card: InfoCardData) => void;
+    deleteCard: (key: InfoCardData["key"]) => void;
 }
 
-const CardList: FC<CardListProps> = ({ cards, editCard }) => {
+const CardList: FC<CardListProps> = ({ cards, editCard, deleteCard }) => {
     const renderCards = (): ReactElement[] => {
         return cards.map((card) => {
             return (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={card.key}>
-                    <InfoCard data={card} editCard={editCard} />
+                    <InfoCard
+                        data={card}
+                        editCard={editCard}
+                        deleteCard={deleteCard}
+                    />
                 </Grid>
             );
         });

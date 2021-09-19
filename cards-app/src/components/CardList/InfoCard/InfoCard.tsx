@@ -1,14 +1,9 @@
 import { FC } from "react";
-import {
-    Card,
-    CardContent,
-    CardMedia,
-    IconButton,
-    Typography,
-} from "@mui/material";
-import EditIcon from "@mui/icons-material/Edit";
+import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
-import CardFormDialog from "../../FormDialog/CardFormDialog";
+import CardActionDialog from "../../Dialogs/CardActionDialog";
+import CardFormDialog from "../../Dialogs/FormDialog/CardFormDialog";
+import CardIconButton from "../../Buttons/CardIconButton";
 import * as Constants from "../../../Constants";
 
 export interface InfoCardData {
@@ -20,10 +15,15 @@ export interface InfoCardData {
 
 interface InfoCardProps {
     data: InfoCardData;
-    editCard: (card: InfoCardProps["data"]) => void;
+    editCard: (card: InfoCardData) => void;
+    deleteCard: (cardKey: InfoCardData["key"]) => void;
 }
 
-const InfoCard: FC<InfoCardProps> = ({ data, editCard }) => {
+const InfoCard: FC<InfoCardProps> = ({
+    data,
+    editCard,
+    deleteCard: externalDeleteCard,
+}) => {
     const [showActions, setShowActions] = React.useState(false);
 
     const handleMouseEnter = () => {
@@ -42,6 +42,21 @@ const InfoCard: FC<InfoCardProps> = ({ data, editCard }) => {
 
     const handleCloseEditDialog = () => {
         setShowEditDialog(false);
+    };
+
+    const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
+
+    const handleClickOpenDeleteDialog = () => {
+        setShowDeleteDialog(true);
+    };
+
+    const handleCloseDeleteDialog = () => {
+        setShowDeleteDialog(false);
+    };
+
+    const deleteCard = () => {
+        externalDeleteCard(data.key);
+        handleCloseDeleteDialog();
     };
 
     return (
@@ -79,13 +94,20 @@ const InfoCard: FC<InfoCardProps> = ({ data, editCard }) => {
                     {data.description}
                 </Typography>
                 {showActions && (
-                    <IconButton
-                        aria-label="edit"
-                        sx={{ position: "absolute", top: 5, right: 5 }}
-                        onClick={handleClickOpenEditDialog}
-                    >
-                        <EditIcon />
-                    </IconButton>
+                    <>
+                        <Box sx={{ position: "absolute", top: 5, right: 5 }}>
+                            <CardIconButton
+                                icon="edit"
+                                aria-label="edit"
+                                onClick={handleClickOpenEditDialog}
+                            />
+                            <CardIconButton
+                                icon="delete"
+                                aria-label="delete"
+                                onClick={handleClickOpenDeleteDialog}
+                            />
+                        </Box>
+                    </>
                 )}
                 <CardFormDialog
                     open={showEditDialog}
@@ -94,6 +116,17 @@ const InfoCard: FC<InfoCardProps> = ({ data, editCard }) => {
                     dialogTitle={Constants.EDIT_CARD}
                     dialogButton={Constants.EDIT}
                     initialCardData={data}
+                />
+                <CardActionDialog
+                    open={showDeleteDialog}
+                    title={Constants.DELETE_CARD_DIALOG_TITLE}
+                    body={Constants.DELETE_CARD_DIALOG_BODY.replace(
+                        "{title}",
+                        data.title
+                    )}
+                    actionButton={Constants.DELETE}
+                    handleClose={handleCloseDeleteDialog}
+                    handleAction={deleteCard}
                 />
             </CardContent>
         </Card>

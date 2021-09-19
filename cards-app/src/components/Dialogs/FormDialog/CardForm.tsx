@@ -1,8 +1,8 @@
 import React from "react";
 import { FC } from "react";
 import CardTextField from "./CardFormTextField";
-import * as Constants from "../../Constants";
-import { InfoCardData } from "../CardList/InfoCard/InfoCard";
+import * as Constants from "../../../Constants";
+import { InfoCardData } from "../../CardList/InfoCard/InfoCard";
 
 export interface CardFormInput {
     cardData: InfoCardData;

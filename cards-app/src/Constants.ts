@@ -7,3 +7,8 @@ export const NEW_CARD = "Nueva tarjeta";
 export const ADD = "Añadir";
 export const EDIT_CARD = "Editar tarjeta";
 export const EDIT = "Editar";
+export const DELETE_CARD_DIALOG_TITLE = "¿Eliminar tarjeta?";
+export const DELETE_CARD_DIALOG_BODY =
+    'Se va a eliminar la tarjeta titulada "{title}". Una vez eliminada no podrá recuperarse.';
+export const CANCEL = "Cancelar";
+export const DELETE = "Eliminar";

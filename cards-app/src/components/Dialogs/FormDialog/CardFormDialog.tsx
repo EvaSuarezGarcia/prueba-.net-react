@@ -1,5 +1,5 @@
 import CardForm, { CardFormInput } from "./CardForm";
-import { InfoCardData } from "../CardList/InfoCard/InfoCard";
+import { InfoCardData } from "../../CardList/InfoCard/InfoCard";
 import {
     Button,
     Dialog,
@@ -8,7 +8,7 @@ import {
     DialogTitle,
 } from "@mui/material";
 import React from "react";
-import * as Constants from "../../Constants";
+import * as Constants from "../../../Constants";
 
 export interface CardFormDialogProps {
     open: boolean;
