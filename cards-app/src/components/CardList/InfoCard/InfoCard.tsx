@@ -5,6 +5,7 @@ import CardActionDialog from "../../Dialogs/CardActionDialog";
 import CardFormDialog from "../../Dialogs/FormDialog/CardFormDialog";
 import CardIconButton from "../../Buttons/CardIconButton";
 import * as Constants from "../../../Constants";
+import "./InfoCard.css";
 
 export interface InfoCardData {
     title: string;
@@ -25,21 +26,10 @@ const InfoCard: FC<InfoCardProps> = ({
     editCard,
     deleteCard: externalDeleteCard,
 }) => {
-    const [showActions, setShowActions] = React.useState(false);
-
-    const handleMouseEnter = () => {
-        setShowActions(true);
-    };
-
-    const handleMouseLeave = () => {
-        setShowActions(false);
-    };
-
     const [showEditDialog, setShowEditDialog] = React.useState(false);
 
     const handleClickOpenEditDialog = () => {
         setShowEditDialog(true);
-        setShowActions(false);
     };
 
     const handleCloseEditDialog = () => {
@@ -50,7 +40,6 @@ const InfoCard: FC<InfoCardProps> = ({
 
     const handleClickOpenDeleteDialog = () => {
         setShowDeleteDialog(true);
-        setShowActions(false);
     };
 
     const handleCloseDeleteDialog = () => {
@@ -63,11 +52,7 @@ const InfoCard: FC<InfoCardProps> = ({
     };
 
     return (
-        <Card
-            sx={{ position: "relative" }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-        >
+        <Card sx={{ position: "relative" }} className="card">
             <CardMedia
                 component="img"
                 image={data.image}
@@ -84,6 +69,7 @@ const InfoCard: FC<InfoCardProps> = ({
                 >
                     {data.title}
                 </Typography>
+                {/* For better cross-browser support, we should probably use a plugin */}
                 <Typography
                     variant="body2"
                     sx={{
@@ -96,22 +82,24 @@ const InfoCard: FC<InfoCardProps> = ({
                 >
                     {data.description}
                 </Typography>
-                {showActions && (
-                    <>
-                        <Box sx={{ position: "absolute", top: 5, right: 5 }}>
-                            <CardIconButton
-                                icon="edit"
-                                aria-label="edit"
-                                onClick={handleClickOpenEditDialog}
-                            />
-                            <CardIconButton
-                                icon="delete"
-                                aria-label="delete"
-                                onClick={handleClickOpenDeleteDialog}
-                            />
-                        </Box>
-                    </>
-                )}
+                {/* Card action buttons */}
+                <Box
+                    className="card-actions"
+                    sx={{ position: "absolute", top: 5, right: 5 }}
+                >
+                    <CardIconButton
+                        icon="edit"
+                        aria-label="edit"
+                        onClick={handleClickOpenEditDialog}
+                    />
+                    <CardIconButton
+                        icon="delete"
+                        aria-label="delete"
+                        onClick={handleClickOpenDeleteDialog}
+                    />
+                </Box>
+                {/* Card dialogs. There has to be a way to do this with a single shared dialog, 
+                but I can't make it work */}
                 <CardFormDialog
                     open={showEditDialog}
                     handleClose={handleCloseEditDialog}

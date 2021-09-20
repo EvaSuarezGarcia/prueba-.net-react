@@ -36,7 +36,7 @@ describe("Card App", () => {
             cy.get("[name='title']").type(title);
             cy.get("textarea[name='description']").type(description);
             cy.contains(Constants.ADD).click();
-            cy.contains(title).trigger("mouseover");
+            cy.get(".card-actions").invoke("show");
         });
 
         it("a card has actions", () => {
@@ -90,29 +90,29 @@ describe("Card App", () => {
             it("can sort by title", () => {
                 // Asc
                 cy.get("button").contains(Constants.SORT_BY_TITLE).click();
-                cy.get(".MuiGrid-item:first").get("h5").contains(title3);
-                cy.get(".MuiGrid-item:first").next().get("h5").contains(title);
-                cy.get(".MuiGrid-item:last").get("h5").contains(title2);
+                cy.get(".card").eq(0).get("h5").contains(title3);
+                cy.get(".card").eq(1).get("h5").contains(title);
+                cy.get(".card").eq(2).get("h5").contains(title2);
 
                 // Desc
                 cy.get("button").contains(Constants.SORT_BY_TITLE).click();
-                cy.get(".MuiGrid-item:first").get("h5").contains(title2);
-                cy.get(".MuiGrid-item:first").next().get("h5").contains(title);
-                cy.get(".MuiGrid-item:last").get("h5").contains(title3);
+                cy.get(".card").eq(0).get("h5").contains(title2);
+                cy.get(".card").eq(1).get("h5").contains(title);
+                cy.get(".card").eq(2).get("h5").contains(title3);
             });
 
             it("can sort by creation date", () => {
                 // Desc
                 cy.get("button").contains(Constants.SORT_BY_CREATION_DATE).click();
-                cy.get(".MuiGrid-item:first").get("h5").contains(title3);
-                cy.get(".MuiGrid-item:first").next().get("h5").contains(title2);
-                cy.get(".MuiGrid-item:last").get("h5").contains(title);
+                cy.get(".card").eq(0).get("h5").contains(title3);
+                cy.get(".card").eq(1).get("h5").contains(title2);
+                cy.get(".card").eq(2).get("h5").contains(title);
 
                 // Asc
                 cy.get("button").contains(Constants.SORT_BY_CREATION_DATE).click();
-                cy.get(".MuiGrid-item:first").get("h5").contains(title);
-                cy.get(".MuiGrid-item:first").next().get("h5").contains(title2);
-                cy.get(".MuiGrid-item:last").get("h5").contains(title3);
+                cy.get(".card").eq(0).get("h5").contains(title);
+                cy.get(".card").eq(1).get("h5").contains(title2);
+                cy.get(".card").eq(2).get("h5").contains(title3);
             });
         });
     });
