@@ -13,30 +13,37 @@ describe("Card App", () => {
         cy.get("[aria-label='add']");
     });
 
-    it("can create a card without image", () => {
+    const createCard = (cardTitle, cardDescription, cardImg) => {
         cy.get("[aria-label='add']").click();
-        cy.get("[name='title']").type(title);
-        cy.get("textarea[name='description']").type(description);
+        cy.get("[name='title']").type(cardTitle);
+        cy.get("textarea[name='description']").type(cardDescription);
+        if (cardImg) {
+            cy.get("[name='image']").type(cardImg);
+        }
         cy.contains(Constants.ADD).click();
-        cy.contains(title).parent("div").siblings("img").should("have.attr", "src").should("include", "gato-marron");
+    }
+
+    it("can create a card without image", () => {
+        createCard(title, description);
+        cy.contains(title).parent("div").siblings("img").should("have.attr", "src").should("include", Constants.DEFAULT_IMAGE_URL);
     });
 
     it("can create a card with image", () => {
-        cy.get("[aria-label='add']").click();
-        cy.get("[name='title']").type(title);
-        cy.get("textarea[name='description']").type(description);
-        cy.get("[name='image']").type(img);
-        cy.contains(Constants.ADD).click();
+        createCard(title, description, img);
         cy.contains(title).parent("div").siblings("img").should("have.attr", "src").should("include", img);
     });
 
-    describe("when a card exists", () => {
+    describe("when a card has been created", () => {
         beforeEach(() => {
-            cy.get("[aria-label='add']").click();
-            cy.get("[name='title']").type(title);
-            cy.get("textarea[name='description']").type(description);
-            cy.contains(Constants.ADD).click();
+            createCard(title, description);
             cy.get(".card-actions").invoke("show");
+        });
+
+        it("add modal has empty inputs", () => {
+            cy.get("[aria-label='add']").click();
+            cy.get("[name='title']").should("have.value", "");
+            cy.get("textarea[name='description']").should("have.value", "");
+            cy.get("[name='image']").should("have.value", "");
         });
 
         it("a card has actions", () => {
@@ -56,6 +63,12 @@ describe("Card App", () => {
             cy.contains(titleEdit);
             cy.contains(descriptionEdit);
             cy.contains(titleEdit).parent("div").siblings("img").should("have.attr", "src").should("include", img);
+
+            // Edit modal shows updated values
+            cy.get("[aria-label='edit']").click();
+            cy.get("[name='title']").should("have.value", titleEdit);
+            cy.get("textarea[name='description']").should("have.value", descriptionEdit);
+            cy.get("[name='image']").should("have.value", img);
         });
 
         it("can delete card", () => {
@@ -76,43 +89,34 @@ describe("Card App", () => {
             const description3 = "Descripción cisne";
 
             beforeEach(() => {
-                cy.get("[aria-label='add']").click();
-                cy.get("[name='title']").type(title2);
-                cy.get("textarea[name='description']").type(description2);
-                cy.contains(Constants.ADD).click();
-
-                cy.get("[aria-label='add']").click();
-                cy.get("[name='title']").type(title3);
-                cy.get("textarea[name='description']").type(description3);
-                cy.contains(Constants.ADD).click();
+                createCard(title2, description2);
+                createCard(title3, description3);
             });
+
+            const checkCardsOrder = (expectedTitles) => {
+                cy.get(".card h5").each((title, index) => {
+                    cy.wrap(title).should("have.text", expectedTitles[index]);
+                });
+            }
 
             it("can sort by title", () => {
                 // Asc
                 cy.get("button").contains(Constants.SORT_BY_TITLE).click();
-                cy.get(".card").eq(0).get("h5").contains(title3);
-                cy.get(".card").eq(1).get("h5").contains(title);
-                cy.get(".card").eq(2).get("h5").contains(title2);
+                checkCardsOrder([title3, title, title2]);
 
                 // Desc
                 cy.get("button").contains(Constants.SORT_BY_TITLE).click();
-                cy.get(".card").eq(0).get("h5").contains(title2);
-                cy.get(".card").eq(1).get("h5").contains(title);
-                cy.get(".card").eq(2).get("h5").contains(title3);
+                checkCardsOrder([title2, title, title3]);
             });
 
             it("can sort by creation date", () => {
                 // Desc
                 cy.get("button").contains(Constants.SORT_BY_CREATION_DATE).click();
-                cy.get(".card").eq(0).get("h5").contains(title3);
-                cy.get(".card").eq(1).get("h5").contains(title2);
-                cy.get(".card").eq(2).get("h5").contains(title);
+                checkCardsOrder([title3, title2, title]);
 
                 // Asc
                 cy.get("button").contains(Constants.SORT_BY_CREATION_DATE).click();
-                cy.get(".card").eq(0).get("h5").contains(title);
-                cy.get(".card").eq(1).get("h5").contains(title2);
-                cy.get(".card").eq(2).get("h5").contains(title3);
+                checkCardsOrder([title, title2, title3]);
             });
         });
     });
