@@ -52,6 +52,11 @@ const CardForm: FC<Props> = ({ input, handleChange }) => {
                 onChange={handleChange}
             />
             <input type="hidden" name="key" value={input.cardData.key} />
+            <input
+                type="hidden"
+                name="creation-date"
+                value={input.cardData.creationDate}
+            />
         </>
     );
 };

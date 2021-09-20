@@ -12,3 +12,6 @@ export const DELETE_CARD_DIALOG_BODY =
     'Se va a eliminar la tarjeta titulada "{title}". Una vez eliminada no podrá recuperarse.';
 export const CANCEL = "Cancelar";
 export const DELETE = "Eliminar";
+
+export const SORT_BY_TITLE = "Ordenar por título";
+export const SORT_BY_CREATION_DATE = "Ordenar por fecha";

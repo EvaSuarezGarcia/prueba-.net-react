@@ -57,6 +57,50 @@ const App: React.FC = () => {
         setCards(newCards);
     };
 
+    // --- Sort cards ---
+    const [sortByTitleAsc, setSortByTitleAsc] = React.useState<boolean | null>(
+        null
+    );
+
+    const [sortByCreationDateAsc, setSortByCreationDateAsc] = React.useState<
+        boolean | null
+    >(null);
+
+    const defaultTitleOrdering = true;
+
+    const sortByTitle = () => {
+        // Change ordering
+        const ascOrder =
+            sortByTitleAsc !== null ? !sortByTitleAsc : defaultTitleOrdering;
+        const order = ascOrder ? 1 : -1;
+        const newCards = [...cards].sort((a, b) =>
+            a.title < b.title ? -1 * order : 1 * order
+        );
+        setCards(newCards);
+        setSortByTitleAsc((prevState) =>
+            prevState !== null ? !prevState : defaultTitleOrdering
+        );
+        setSortByCreationDateAsc(null);
+    };
+
+    const defaultDateOrdering = false;
+
+    const sortByCreationDate = () => {
+        const ascOrder =
+            sortByCreationDateAsc !== null
+                ? !sortByCreationDateAsc
+                : defaultDateOrdering;
+        const order = ascOrder ? 1 : -1;
+        const newCards = [...cards].sort((a, b) =>
+            a.creationDate < b.creationDate ? -1 * order : 1 * order
+        );
+        setCards(newCards);
+        setSortByCreationDateAsc((prevState) =>
+            prevState !== null ? !prevState : defaultDateOrdering
+        );
+        setSortByTitleAsc(null);
+    };
+
     return (
         <>
             <ThemeProvider theme={theme}>
@@ -65,6 +109,10 @@ const App: React.FC = () => {
                     cards={cards}
                     editCard={editCard}
                     deleteCard={deleteCard}
+                    sortByTitle={sortByTitle}
+                    sortByTitleAsc={sortByTitleAsc}
+                    sortByCreationDate={sortByCreationDate}
+                    sortByCreationDateAsc={sortByCreationDateAsc}
                 />
                 <AddFab onClick={handleClickOpenAddDialog} />
                 <CardFormDialog
@@ -79,6 +127,7 @@ const App: React.FC = () => {
                         description: "",
                         image: "",
                         key: 0,
+                        creationDate: 0,
                     }}
                 />
             </ThemeProvider>

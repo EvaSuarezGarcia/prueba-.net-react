@@ -53,11 +53,13 @@ const CardFormDialog: React.FC<CardFormDialogProps> = ({
                 descriptionError: !input.cardData.description,
             });
         } else {
+            const now = new Date().getTime();
             callback({
                 title: input.cardData.title,
                 description: input.cardData.description,
                 image: input.cardData.image || Constants.DEFAULT_IMAGE_URL,
-                key: input.cardData.key || new Date().getTime(),
+                key: input.cardData.key || now,
+                creationDate: input.cardData.creationDate || now,
             });
             if (clearOnSubmit) {
                 handleClose();

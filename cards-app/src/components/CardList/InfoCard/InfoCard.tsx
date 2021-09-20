@@ -11,6 +11,7 @@ export interface InfoCardData {
     description: string;
     image: string;
     key: number;
+    creationDate: number;
 }
 
 interface InfoCardProps {
