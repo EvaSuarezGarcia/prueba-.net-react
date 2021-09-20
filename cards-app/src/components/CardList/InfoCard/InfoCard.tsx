@@ -1,9 +1,8 @@
-import { FC } from "react";
-import { Box, Card, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import CardActionDialog from "../../Dialogs/CardActionDialog";
 import CardFormDialog from "../../Dialogs/FormDialog/CardFormDialog";
-import CardIconButton from "../../Buttons/CardIconButton";
+import CardActionsButtonGroup from "../../Buttons/ButtonGroups/CardActionsButtonGroup";
 import * as Constants from "../../../Constants";
 import "./InfoCard.css";
 
@@ -21,7 +20,7 @@ interface InfoCardProps {
     deleteCard: (cardKey: InfoCardData["key"]) => void;
 }
 
-const InfoCard: FC<InfoCardProps> = ({
+const InfoCard: React.FC<InfoCardProps> = ({
     data,
     editCard,
     deleteCard: externalDeleteCard,
@@ -83,21 +82,10 @@ const InfoCard: FC<InfoCardProps> = ({
                     {data.description}
                 </Typography>
                 {/* Card action buttons */}
-                <Box
-                    className="card-actions"
-                    sx={{ position: "absolute", top: 5, right: 5 }}
-                >
-                    <CardIconButton
-                        icon="edit"
-                        aria-label="edit"
-                        onClick={handleClickOpenEditDialog}
-                    />
-                    <CardIconButton
-                        icon="delete"
-                        aria-label="delete"
-                        onClick={handleClickOpenDeleteDialog}
-                    />
-                </Box>
+                <CardActionsButtonGroup
+                    onClickEdit={handleClickOpenEditDialog}
+                    onClickDelete={handleClickOpenDeleteDialog}
+                />
                 {/* Card dialogs. There has to be a way to do this with a single shared dialog, 
                 but I can't make it work */}
                 <CardFormDialog

@@ -1,15 +1,15 @@
 import React from "react";
-import { Icon, IconButton, IconButtonProps } from "@mui/material";
+import { IconButton, IconButtonProps } from "@mui/material";
 
 interface CardIconButtonProps extends IconButtonProps {
-    icon: string;
+    icon: React.ReactElement;
 }
 
 const CardIconButton: React.FC<CardIconButtonProps> = (props) => {
     const { icon, ...rest } = props;
     return (
         <IconButton {...rest}>
-            <Icon>{icon}</Icon>
+            {icon}
         </IconButton>
     );
 };

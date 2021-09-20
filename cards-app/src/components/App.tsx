@@ -1,11 +1,12 @@
 import React from "react";
-import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import { Box, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import CardList from "./CardList/CardList";
 import CardFormDialog from "./Dialogs/FormDialog/CardFormDialog";
 import { CardListProps } from "./CardList/CardList";
 import { InfoCardData } from "./CardList/InfoCard/InfoCard";
 import AddFab from "./Buttons/AddFab";
 import * as Constants from "../Constants";
+import SortCardsButtonGroup from "./Buttons/ButtonGroups/SortCardsButtonGroup";
 
 const theme = createTheme({
     palette: {
@@ -102,36 +103,38 @@ const App: React.FC = () => {
     };
 
     return (
-        <>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
+        <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <Box padding={4}>
+                <SortCardsButtonGroup
+                    sortByTitleAsc={sortByTitleAsc}
+                    sortByTitle={sortByTitle}
+                    sortByCreationDateAsc={sortByCreationDateAsc}
+                    sortByCreationDate={sortByCreationDate}
+                />
                 <CardList
                     cards={cards}
                     editCard={editCard}
                     deleteCard={deleteCard}
-                    sortByTitle={sortByTitle}
-                    sortByTitleAsc={sortByTitleAsc}
-                    sortByCreationDate={sortByCreationDate}
-                    sortByCreationDateAsc={sortByCreationDateAsc}
                 />
-                <AddFab onClick={handleClickOpenAddDialog} />
-                <CardFormDialog
-                    open={showAddDialog}
-                    callback={addCard}
-                    handleClose={handleCloseAddDialog}
-                    dialogTitle={Constants.NEW_CARD}
-                    dialogButton={Constants.ADD}
-                    clearOnSubmit={true}
-                    initialCardData={{
-                        title: "",
-                        description: "",
-                        image: "",
-                        key: 0,
-                        creationDate: 0,
-                    }}
-                />
-            </ThemeProvider>
-        </>
+            </Box>
+            <AddFab onClick={handleClickOpenAddDialog} />
+            <CardFormDialog
+                open={showAddDialog}
+                callback={addCard}
+                handleClose={handleCloseAddDialog}
+                dialogTitle={Constants.NEW_CARD}
+                dialogButton={Constants.ADD}
+                clearOnSubmit={true}
+                initialCardData={{
+                    title: "",
+                    description: "",
+                    image: "",
+                    key: 0,
+                    creationDate: 0,
+                }}
+            />
+        </ThemeProvider>
     );
 };
 
